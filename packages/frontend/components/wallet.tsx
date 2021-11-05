@@ -26,7 +26,7 @@ const Wallet = () => {
             {!web3Connect.active && 
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme={DEFAULT_COLOR_SCHEME}>
-                        Connect
+                        Connect Wallet
                     </MenuButton>
                     <MenuList>
                         <MenuItem onClick={connect}>Metamask</MenuItem>

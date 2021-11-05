@@ -5,7 +5,9 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { getProvider } from '../utils/web3';
 import Layout from '../components/layout';
 
-// https://coolors.co/ffbe0b-fb5607-ff006e-8338ec-3a86ff
+
+// new 
+// https://coolors.co/0d1b2a-1b263b-415a77-778da9-e0e1dd
 const colors = {
   brand: {
     900: "#FF006E", // winter sky
@@ -18,7 +20,6 @@ const theme = extendTheme({ colors })
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-
     <Web3ReactProvider  getLibrary={getProvider}>
       <ChakraProvider theme={theme}>
         <Layout>

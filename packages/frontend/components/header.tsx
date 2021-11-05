@@ -1,4 +1,4 @@
-import { Text, IconButton, Flex, LinkBox, Spacer, Box } from '@chakra-ui/react';
+import { Text, Button, Flex, LinkBox, Spacer, Box } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import Image from 'next/image'
 import logo from '../resources/images/logo.png';
@@ -10,14 +10,14 @@ const Header = () => {
         <Flex as="header" p={4} alignItems="center">
             <LinkBox>
                 <NextLink href="/" passHref={true}>
-                    <Text fontSize="2xl">Unilearn 🦄</Text>
+                    <Text fontSize="2xl">🦄 Unilearn</Text>
                 </NextLink>
             </LinkBox>
             <Spacer />
             <Box mr={4}>
                 <LinkBox>
-                    <NextLink href="/post" passHref={true}>
-                        <IconButton  aria-label="Create Post" icon={<AddIcon/>}/>
+                    <NextLink href="/create-quiz" passHref={true}>
+                        <Button  aria-label="Create Post">✍️{' '}Create Quiz</Button>
                     </NextLink>
                 </LinkBox>
             </Box>
