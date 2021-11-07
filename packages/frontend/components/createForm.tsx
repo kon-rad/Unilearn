@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Input, Flex, Textarea, Center, Box, Button } from '@chakra-ui/react'
-import { uploadImageToIPFS } from '../services/create-post';
+import { uploadImageToIPFS } from '../services/createQuiz';
 
 type Props = {
     submit: any,

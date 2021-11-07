@@ -19,6 +19,7 @@ contract UnilearnNFT is ERC721URIStorage {
   function createToken(string memory tokenURI) public returns (uint) {
     _tokenIds.increment();
     uint256 newItemId = _tokenIds.current();
+    console.log("createToken is called with tokenURI:", tokenURI, newItemId);
 
     _mint(msg.sender, newItemId);
     _setTokenURI(newItemId, tokenURI);

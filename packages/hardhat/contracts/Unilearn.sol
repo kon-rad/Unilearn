@@ -11,9 +11,19 @@ contract Unilearn is ReentrancyGuard {
   using Counters for Counters.Counter;
   Counters.Counter private _quizzesIds;
 
+  uint[] quizIndex;
   address payable owner;
 
-  mapping(address => bool) public quizCreators;
+  struct Quiz {
+    string nftId;
+    string answers;
+    address submitter;
+    address[] completed;
+    bool exists;
+  }
+
+  mapping(address => bool) public creatorsWhitelist;
+  mapping(uint => Quiz) private idToQuiz;
 
   constructor() {
     owner = payable(msg.sender);
@@ -38,44 +48,38 @@ contract Unilearn is ReentrancyGuard {
     // post NFT id - NFT stores description, and questions
     // return id
 
-  struct Quiz {
-    string nftId;
-    string answers;
-    address submitter;
-    address[] completed;
-    bool exists;
-  }
-
   modifier creatorsOnly {
-    require(quizCreators[msg.sender], "Caller must be whitelisted quiz creator");
+    require(creatorsWhitelist[msg.sender], "Caller must be whitelisted quiz creator");
     _;
   }
 
-  function createQuiz(string nftId, string answers) public payable creatorsOnly nonReentrant {
+  function createQuiz(string calldata nftId, string calldata answers) public payable creatorsOnly nonReentrant {
 
-    bytes32 hash = keccak256(abi.encodePacked(nftId, block.number));
+    console.log("createQuiz is called with :", nftId, answers);
+    _quizzesIds.increment();
+    uint quizId = _quizzesIds.current();
 
-    quizIndex.push(hash);
-
-    quizzes[hash] = Quiz(
+    idToQuiz[quizId] = Quiz(
       nftId,
       answers,
       msg.sender,
-      [],
+      new address[](0),
       true
     );
-    _quizzesIds.increment();
     // todo: emit event
   }
 
   function getAllQuizzes() public view returns (Quiz[] memory) {
+    console.log("getAllQuizzes is called");
+
     uint numOfQuizzes = _quizzesIds.current();
-    uint currentIndex = 0;
+    uint currentQuiz = 1;
 
     Quiz[] memory allQuizzes = new Quiz[](numOfQuizzes);
-    for (uint i = 0; i < numOfQuizzes; i++) {
-      allQuizzes[currentIndex] = quizzes[i + 1];
-      currentIndex += 1;
+
+    for (uint i = 1; i < numOfQuizzes; i++) {
+      allQuizzes[currentQuiz] = idToQuiz[i];
+      currentQuiz += 1;
     }
 
     return allQuizzes;

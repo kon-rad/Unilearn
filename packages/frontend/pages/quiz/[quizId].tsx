@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react"
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { Box, Text } from '@chakra-ui/react';
 
-interface Props {
-    journey: Journey
-  }
-  
-  interface Params extends ParsedUrlQuery {
-    journey: string
-  }
+type Props = {
+
+}
 
 const Quiz = (props: Props) => {
     return (

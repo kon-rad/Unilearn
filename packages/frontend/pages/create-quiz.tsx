@@ -9,6 +9,8 @@ import AnswerInput from '../components/answerInput';
 import QuestionCrumbs from '../components/questionCrumbs';
 import QuizReader from '../components/quizReader';
 import { MAIN_COLOR_1, MAIN_COLOR_HOVER_1 } from '../utils/constants';
+import { createQuiz, uploadQuizToIPFS } from '../services/createQuiz';
+import { useWeb3React } from "@web3-react/core"
 
 // import { nftAddress, dlMarketAddress } from '../config';
 
@@ -36,6 +38,8 @@ const CreateQuiz: NextPage = () => {
     const [currentStage, setCurrentStage] = useState<number>(0);
     const [questionText, setQuestionText] = useState<string>("");
 
+    const web3 = useWeb3React()
+
     useEffect(() => {
         const initQuestions = (new Array(4)).fill(null).map(() => {
             return ({...QUESTION_TEMPLATE})
@@ -43,7 +47,7 @@ const CreateQuiz: NextPage = () => {
         setQuestions(initQuestions)
         setQuestionLabels(QUESTION_LABELS.map((label, i) => ({ label, isCompleted: false, isActive: i === 0 })))
     }, []);
-    
+
     console.log("questions: ", questions);
     const handleAnswersUpdate = (data: string, index: number) => {
         const currAnswers = [...answers];
@@ -91,15 +95,24 @@ const CreateQuiz: NextPage = () => {
         setAnswers([...questions[currQuestionIndex].answers]);
         setAnswer(questions[currQuestionIndex].answer);
     }
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // () => console.log('submitted: ', JSON.stringify(questions), quizTitle, desc)
 
-        const questionsOnly = questions.map(q => {})
-        const data = JSON.stringify({
+        const questionsOnly = questions.map(({ question, answers }) => ({ question, answers }));
+        const data: string = JSON.stringify({
             title: quizTitle,
             description: desc,
             questions: questionsOnly,
-        })
+        });
+        const answersStr: string = questions.reduce((acc: string, curr: Question) => acc + curr.answer, '');
+        // const url = await uploadQuizToIPFS(data);
+        const url = " https://ipfs.infura.io/ipfs/QmcaCKWDrkB1JriLaWZRCXkYReBE5p1CJaA4eTyYwAw93v";
+
+        console.log('ipfs url: ', url, 'data: ', data, answersStr);
+        if (web3.account && web3.library) {
+            console.log('calling create');
+            await createQuiz(web3.account, web3.library, url);
+        }
     }
     const renderBody = () => {
         if (currentStage === 0) {
@@ -183,7 +196,6 @@ const CreateQuiz: NextPage = () => {
                 <Box mb={4}>
                     <Box mb={4}>
                         <Text fontSize="xl">Please Review Again Before Submitting!</Text>
-                        Quiz content here!!!!
                         <QuizReader answer={answer} desc={desc} questions={questions} />
                     </Box>
                     <Box mb={4}>

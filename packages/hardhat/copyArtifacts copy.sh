@@ -1,1 +1,0 @@
-cp -r ./artifacts/* ../frontend/artifacts/

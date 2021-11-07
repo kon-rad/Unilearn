@@ -1,1 +1,2 @@
-cp -r ./artifacts/* ../frontend/artifacts/
+#!/bin/bash
+cp -r ./artifacts/ ../frontend/artifacts/
