@@ -37,9 +37,6 @@ export async function createQuiz(address: string, provider: Web3Provider, nftUrl
     const tokenId = value.toNumber();
     console.log('created quiz nft - tokenId: ', tokenId);
 
-    // const price = ethers.utils.parseUnits(meditationData.price, 'ether');
-
-    // /* then list the item for sale on the marketplace */
     contract = new ethers.Contract(unilearnAddress, Unilearn.abi, signer);
 
     transaction = await contract.createQuiz(tokenId.toString(), answers);

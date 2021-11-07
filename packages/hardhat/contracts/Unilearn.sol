@@ -69,8 +69,12 @@ contract Unilearn is ReentrancyGuard {
 
   function submitQuiz(string calldata nftId, string calldata answers) public view returns (string memory) {
     string memory correctAnswers = nftIdToAnswer[nftId];
-
+    
+    // Todo: keep stats on number of attempts and successful submissions 
     if (keccak256(bytes(correctAnswers)) == keccak256(bytes(answers))) {
+      // Todo: Generate NFT 'certificate of completion' with user name, quiz name, success message, and time stamp
+      // Todo: Send user Unilearn tokens
+      // Todo: Add user to array of users that completed quiz
       return "Correct Answer! Congratulations!";
     } else {
       return "Incorrect Answer! Try again!";

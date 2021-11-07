@@ -102,8 +102,9 @@ const CreateQuiz: NextPage = () => {
             questions: questionsOnly,
         });
         const answers: string = questions.reduce((acc: string, curr: Question) => acc + curr.answer, '');
-        // const url = await uploadQuizToIPFS(data);
-        const url = " https://ipfs.infura.io/ipfs/QmcaCKWDrkB1JriLaWZRCXkYReBE5p1CJaA4eTyYwAw93v";
+        const url = await uploadQuizToIPFS(data);
+        // for dev mode use hardcoded ipfs url
+        // const url = " https://ipfs.infura.io/ipfs/QmcaCKWDrkB1JriLaWZRCXkYReBE5p1CJaA4eTyYwAw93v";
 
         console.log('ipfs url: ', url, 'data: ', data, answers);
         if (web3.account && web3.library) {
