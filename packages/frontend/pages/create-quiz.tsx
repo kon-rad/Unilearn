@@ -1,8 +1,5 @@
 import type { NextPage } from 'next'
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import axios from 'axios';
-import Head from 'next/head'
 import { Container, RadioGroup, Radio, Stack, Button, Input, Box, VStack, Text, Textarea } from '@chakra-ui/react';
 import { Question, QuestionLabel } from '../types';
 import AnswerInput from '../components/answerInput';
@@ -104,14 +101,16 @@ const CreateQuiz: NextPage = () => {
             description: desc,
             questions: questionsOnly,
         });
-        const answersStr: string = questions.reduce((acc: string, curr: Question) => acc + curr.answer, '');
+        const answers: string = questions.reduce((acc: string, curr: Question) => acc + curr.answer, '');
         // const url = await uploadQuizToIPFS(data);
         const url = " https://ipfs.infura.io/ipfs/QmcaCKWDrkB1JriLaWZRCXkYReBE5p1CJaA4eTyYwAw93v";
 
-        console.log('ipfs url: ', url, 'data: ', data, answersStr);
+        console.log('ipfs url: ', url, 'data: ', data, answers);
         if (web3.account && web3.library) {
             console.log('calling create');
-            await createQuiz(web3.account, web3.library, url);
+            await createQuiz(web3.account, web3.library, url, answers);
+        } else {
+            console.error("Error: user must have a connected wallet")
         }
     }
     const renderBody = () => {

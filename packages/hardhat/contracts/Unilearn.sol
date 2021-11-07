@@ -16,7 +16,6 @@ contract Unilearn is ReentrancyGuard {
 
   struct Quiz {
     string nftId;
-    string answers;
     address submitter;
     address[] completed;
     bool exists;
@@ -24,48 +23,31 @@ contract Unilearn is ReentrancyGuard {
 
   mapping(address => bool) public creatorsWhitelist;
   mapping(uint => Quiz) private idToQuiz;
+  mapping(string => string) private nftIdToAnswer;
 
   constructor() {
     owner = payable(msg.sender);
   }
 
-  // mapping quiz id -> 
-    // answers
-    // addresses that completed quiz
-
-  // submitQuiz
-    // check if user already took test
-    // check answers
-    // if correct, disburse tokens
-    // get course id
-      // update course progress per user
-      // if user completed course - disburse NFT
-
-  // createQuiz
-    // check if whitelisted
-    // generate id
-    // post answers array
-    // post NFT id - NFT stores description, and questions
-    // return id
-
   modifier creatorsOnly {
-    require(creatorsWhitelist[msg.sender], "Caller must be whitelisted quiz creator");
+    // todo: add restriction to whitelisted addresses only
+    // todo: add whitelisting method
+    // require(creatorsWhitelist[msg.sender], "Caller must be whitelisted quiz creator");
     _;
   }
 
   function createQuiz(string calldata nftId, string calldata answers) public payable creatorsOnly nonReentrant {
-
     console.log("createQuiz is called with :", nftId, answers);
     _quizzesIds.increment();
     uint quizId = _quizzesIds.current();
 
     idToQuiz[quizId] = Quiz(
       nftId,
-      answers,
       msg.sender,
       new address[](0),
       true
     );
+    nftIdToAnswer[nftId] = answers;
     // todo: emit event
   }
 
@@ -73,31 +55,25 @@ contract Unilearn is ReentrancyGuard {
     console.log("getAllQuizzes is called");
 
     uint numOfQuizzes = _quizzesIds.current();
-    uint currentQuiz = 1;
+    uint currentQuiz = 0;
 
     Quiz[] memory allQuizzes = new Quiz[](numOfQuizzes);
 
-    for (uint i = 1; i < numOfQuizzes; i++) {
-      allQuizzes[currentQuiz] = idToQuiz[i];
+    for (uint i = 0; i < numOfQuizzes; i++) {
+      allQuizzes[currentQuiz] = idToQuiz[i + 1];
       currentQuiz += 1;
     }
 
     return allQuizzes;
   }
 
-// - user address
-//   - points
-// - one course
-//   - five questions - answer validated on chain
-//     - if all correct
-//       - check if user already claimed quiz
-//       - user gets disbursed tokens
-//   - if all five quizzes completed
-//     - check if user already claimed quiz
-//     - user get's NFT
-//   - one quiz - one link - one nft - 10 tokens
-//   - complete course - one NFT
-// - must be whitelisted to create course
-//   - course creators must stake 1 eth - get reimbursed when 100 people complete their course
+  function submitQuiz(string calldata nftId, string calldata answers) public view returns (string memory) {
+    string memory correctAnswers = nftIdToAnswer[nftId];
 
+    if (keccak256(bytes(correctAnswers)) == keccak256(bytes(answers))) {
+      return "Correct Answer! Congratulations!";
+    } else {
+      return "Incorrect Answer! Try again!";
+    }
+  }
 }

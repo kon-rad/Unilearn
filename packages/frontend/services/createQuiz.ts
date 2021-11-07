@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { unilearnNFTAddress, unilearnAddress } from '../config';
 
 import NFT from '../artifacts/contracts/UnilearnNFT.sol/UnilearnNFT.json';
-// import Unilearn from '../artifacts/contracts/Unilearn.sol/Unilearn.json';
+import Unilearn from '../artifacts/contracts/Unilearn.sol/Unilearn.json';
 
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -16,7 +16,7 @@ export async function uploadQuizToIPFS(quiz: string): Promise<string> {
     return `https://ipfs.infura.io/ipfs/${added.path}`;
 }
 
-export async function createQuiz(address: string, provider: Web3Provider, nftUrl: string): Promise<string| undefined>  {
+export async function createQuiz(address: string, provider: Web3Provider, nftUrl: string, answers: string): Promise<string| undefined>  {
     console.log('creating Quiz', address, provider, nftUrl)
     if (!nftUrl) {
         console.error('Error: missing data: ', nftUrl);
@@ -40,15 +40,10 @@ export async function createQuiz(address: string, provider: Web3Provider, nftUrl
     // const price = ethers.utils.parseUnits(meditationData.price, 'ether');
 
     // /* then list the item for sale on the marketplace */
-    // contract = new ethers.Contract(nftMarketAddress, Market.abi, signer);
-    // let listingPrice = await contract.getListingPrice();
-    // listingPrice = listingPrice.toString();
+    contract = new ethers.Contract(unilearnAddress, Unilearn.abi, signer);
 
-    // transaction = await contract.createMarketItem(nftAddress, tokenId, price, {
-    //   value: listingPrice,
-    // });
-    // await transaction.wait();
-    // router.push('/');
+    transaction = await contract.createQuiz(tokenId, answers);
+    await transaction.wait();
 }
 
 async function createSale(url: string, price: string, address: string, provider: Web3Provider) {
@@ -71,13 +66,10 @@ async function createSale(url: string, price: string, address: string, provider:
     const ethPrice = ethers.utils.parseUnits(price, 'ether');
     console.log('create post 3');
 
-    /* then list the item for sale on the marketplace */
+    /* Add the quiz NFT to the unilearn contract list of quizzes - with answers */
     const marketContract = new ethers.Contract(unilearnAddress, Market.abi, signer);
-    let listingPrice = await marketContract.getListingPrice();
-    listingPrice = listingPrice.toString();
-    console.log('create post 4');
 
-    transaction = await marketContract.createMarketItem(unilearnNFTAddress, tokenId, ethPrice, {
+    transaction = await marketContract.createMarketItem(unilearnNFTAddress, tokenId, answers, {
         value: listingPrice,
     });
     console.log('create post --- 5')

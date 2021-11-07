@@ -3,16 +3,12 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import logo from '../resources/images/logo.png';
 import { Container, Box, VStack, Text } from '@chakra-ui/react';
 import QuizPreview from '../components/quizPreview';
 import { Quiz } from '../types';
-// import { nftAddress, dlMarketAddress } from '../config';
-
-// import NFT from '../artifacts/contracts/DLNFT.sol/DLNFT.json';
-// import Market from '../artifacts/contracts/DLMarket.sol/DLMarket.json';
+import { getQuizzes } from '../services/getQuizzes';
+import { useWeb3React } from "@web3-react/core"
 
 const mockQuiz = {
   title: "mock quiz",
@@ -23,8 +19,17 @@ const mockQuiz = {
 const Home: NextPage = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   useEffect(() => {
-    setQuizzes([mockQuiz]);
+    requestQuizzes();
   }, [])
+
+  const web3 = useWeb3React()
+
+  const requestQuizzes = async () => {
+    const quizzesData = await getQuizzes();
+    if (quizzesData) {
+      setQuizzes([...quizzesData]);
+    }
+  }
 
   return (
     <div className={styles.container}>
