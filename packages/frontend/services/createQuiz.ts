@@ -42,36 +42,6 @@ export async function createQuiz(address: string, provider: Web3Provider, nftUrl
     // /* then list the item for sale on the marketplace */
     contract = new ethers.Contract(unilearnAddress, Unilearn.abi, signer);
 
-    transaction = await contract.createQuiz(tokenId, answers);
-    await transaction.wait();
-}
-
-async function createSale(url: string, price: string, address: string, provider: Web3Provider) {
-    const signer = provider.getSigner();
-
-    console.log('create post 1');
-    /* next, create the item */
-    const nftContract = new ethers.Contract(unilearnNFTAddress, NFT.abi, signer);
-    let transaction = await nftContract.createToken(url);
-    const tx = await transaction.wait();
-    if (tx.events.length < 1) {
-        console.error('tx has no events. tx: ', tx);
-        return;
-    }
-    console.log('create post 2');
-    const event = tx.events[0];
-    const value = event.args[2];
-    const tokenId = value.toNumber();
-
-    const ethPrice = ethers.utils.parseUnits(price, 'ether');
-    console.log('create post 3');
-
-    /* Add the quiz NFT to the unilearn contract list of quizzes - with answers */
-    const marketContract = new ethers.Contract(unilearnAddress, Market.abi, signer);
-
-    transaction = await marketContract.createMarketItem(unilearnNFTAddress, tokenId, answers, {
-        value: listingPrice,
-    });
-    console.log('create post --- 5')
+    transaction = await contract.createQuiz(tokenId.toString(), answers);
     await transaction.wait();
 }

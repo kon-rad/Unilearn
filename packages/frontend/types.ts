@@ -6,17 +6,9 @@ export interface Question {
 
 export type Quiz = {
     title: string,
-    desc: string,
+    description: string,
     questions: Question[],
 }
-
-// todo: delete me
-// export interface Answer {
-//     A: string;
-//     B: string;
-//     C: string;
-//     D: string;
-// }
 
 export interface QuestionLabel {
     label: number,
