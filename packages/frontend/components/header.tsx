@@ -10,14 +10,14 @@ const Header = () => {
         <Flex as="header" p={4} alignItems="center">
             <LinkBox>
                 <NextLink href="/" passHref={true}>
-                    <Text fontSize="2xl">🦄 Unilearn</Text>
+                    <Text cursor="pointer" fontSize="2xl">🦄 Unilearn</Text>
                 </NextLink>
             </LinkBox>
             <Spacer />
             <Box mr={4}>
                 <LinkBox>
                     <NextLink href="/create-quiz" passHref={true}>
-                        <Button  aria-label="Create Post">✍️{' '}Create Quiz</Button>
+                        <Button  aria-label="Create Post">🚀{' '}Create Quiz</Button>
                     </NextLink>
                 </LinkBox>
             </Box>

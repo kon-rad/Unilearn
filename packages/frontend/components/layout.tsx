@@ -1,8 +1,7 @@
 import Header from './header';
 
-
 type Props = {
-    children: ReacNode
+    children: ReactNode
 }
 
 const Layout = (props: Props) => {

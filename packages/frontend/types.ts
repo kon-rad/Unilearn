@@ -3,6 +3,13 @@ export interface Question {
     answers: string[];
     answer: string;
 }
+
+export type Quiz = {
+    title: string,
+    desc: string,
+    questions: Question[],
+}
+
 // todo: delete me
 // export interface Answer {
 //     A: string;

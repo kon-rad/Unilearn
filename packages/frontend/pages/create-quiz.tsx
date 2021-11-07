@@ -8,40 +8,43 @@ import { Question, QuestionLabel } from '../types';
 import AnswerInput from '../components/answerInput';
 import QuestionCrumbs from '../components/questionCrumbs';
 import QuizReader from '../components/quizReader';
+import { MAIN_COLOR_1, MAIN_COLOR_HOVER_1 } from '../utils/constants';
 
 // import { nftAddress, dlMarketAddress } from '../config';
 
 // import NFT from '../artifacts/contracts/DLNFT.sol/DLNFT.json';
 // import Market from '../artifacts/contracts/DLMarket.sol/DLMarket.json';
 
-const QUESTION_TEMPLATE = {
-    question: "",
-    answers: {
-        A: "",
-        B: "",
-        C: "",
-        D: "",
-    },
-    answer: "",
-}
-
 const QUESTION_LABELS = [1, 2, 3, 4, 5];
 const QUESTION_LABEL = { label: null, isCompleted: false};
 const DEFAULT_ANSWERS = ["", "", "", ""];
+const QUESTION_TEMPLATE = {
+    question: "",
+    answers: [...DEFAULT_ANSWERS],
+    answer: "",
+}
 
 const CreateQuiz: NextPage = () => {
     const [desc, setDesc] = useState<string>("");
     const [correctAnswer, setCorrectAnswer] = useState<string>("");
     const [answer, setAnswer] = useState<string>("");
+    const [quizTitle, setQuizTitle] = useState<string>("");
     const [answers, setAnswers] = useState<string[]>([...DEFAULT_ANSWERS]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [questionLabels, setQuestionLabels] = useState<QuestionLabel[]>([]);
-    const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+    // todo: make type one of 0-4
+    const [currentStage, setCurrentStage] = useState<number>(0);
     const [questionText, setQuestionText] = useState<string>("");
+
     useEffect(() => {
-        setQuestions(new Array(4).fill(QUESTION_TEMPLATE))
+        const initQuestions = (new Array(4)).fill(null).map(() => {
+            return ({...QUESTION_TEMPLATE})
+        });
+        setQuestions(initQuestions)
         setQuestionLabels(QUESTION_LABELS.map((label, i) => ({ label, isCompleted: false, isActive: i === 0 })))
     }, []);
+    
+    console.log("questions: ", questions);
     const handleAnswersUpdate = (data: string, index: number) => {
         const currAnswers = [...answers];
         currAnswers[index] = data;
@@ -59,7 +62,8 @@ const CreateQuiz: NextPage = () => {
     }
     const handleNext = () => {
         const currQuestions = [...questions];
-        currQuestions[currentQuestion] = {
+        const currQuestionIndex = currentStage - 1;
+        currQuestions[currQuestionIndex] = {
             question: questionText,
             answer,
             answers,
@@ -67,31 +71,44 @@ const CreateQuiz: NextPage = () => {
         // todo: validate that all fields are filled in and correct
         setQuestions(currQuestions);
         const currQuestionLabels = [...questionLabels];
-        currQuestionLabels[currentQuestion - 1].isCompleted = true;
-        currQuestionLabels[currentQuestion - 1].isActive = false;
-        if (currentQuestion !== 5) {
-            currQuestionLabels[currentQuestion].isActive = true;
+        currQuestionLabels[currQuestionIndex].isCompleted = true;
+        currQuestionLabels[currQuestionIndex].isActive = false;
+        if (currentStage !== 5) {
+            currQuestionLabels[currentStage].isActive = true;
         } else {
-            currQuestionLabels[currentQuestion - 1].isCompleted = true;
+            currQuestionLabels[currQuestionIndex].isCompleted = true;
         }
         setQuestionLabels(currQuestionLabels)
-        setCurrentQuestion(currentQuestion === 5 ? currentQuestion : currentQuestion + 1)
-        clearQuestionForm();
-        if (currentQuestion === 5) {
+        setCurrentStage(currentStage === 5 ? currentStage : currentStage + 1)
+        loadQuestionForm();
+        if (currentStage === 5) {
 
         }
     }
-    const clearQuestionForm = () => {
-        setQuestionText("");
-        setAnswers([...DEFAULT_ANSWERS]);
-        setAnswer("");
+    const loadQuestionForm = () => {
+        const currQuestionIndex = currentStage - 1;
+        setQuestionText(questions[currQuestionIndex].question);
+        setAnswers([...questions[currQuestionIndex].answers]);
+        setAnswer(questions[currQuestionIndex].answer);
+    }
+    const handleSubmit = () => {
+        // () => console.log('submitted: ', JSON.stringify(questions), quizTitle, desc)
+
+        const questionsOnly = questions.map(q => {})
+        const data = JSON.stringify({
+            title: quizTitle,
+            description: desc,
+            questions: questionsOnly,
+        })
     }
     const renderBody = () => {
-        if (currentQuestion === 0) {
+        if (currentStage === 0) {
             return (
                 <Box mb={4}>
                     <Box mb={4}>
-                        <Text size="xl">What is this Quiz on?</Text>
+                        <Text fontSize="xl">Title</Text>
+                        <Input mb={4} placeholder="What should the Quiz be called?" value={quizTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuizTitle(e.target.value)}/>
+                        <Text fontSize="xl">What is this Quiz on?</Text>
                         <Textarea 
                             value={desc}
                             onChange={(e) => setDesc(e.target.value)}
@@ -99,29 +116,40 @@ const CreateQuiz: NextPage = () => {
                             placeholder="Enter a link to an article here" />
                     </Box>
                     <Box mb={4}>
-                        <Button onClick={() => setCurrentQuestion(currentQuestion + 1)}>Next</Button>
+                        <Button
+                            onClick={() => setCurrentStage(1)}
+                            backgroundColor={MAIN_COLOR_1} 
+                            _hover={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                            _active={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                        >
+                            Next
+                        </Button>
                     </Box>
                 </Box>
             )
-        } else if (currentQuestion < 5) {
+        } else if (currentStage < 5) {
             return (
                 <Box>
-                    <Box mb={4} p={4} border="1px" borderColor="gray.200" borderRadius="6">
-                        <Text size="xl">{desc}</Text>
+                    <Box mb={4} p={4} border="1px" borderColor="gray.700" borderRadius="6">
+                        <Text fontSize="xl">{desc}</Text>
                     </Box>
                     <Box mb={4}>
-                        <Text size="xl" mb="2">Questions:</Text>
-                        <QuestionCrumbs questionLabels={questionLabels} currentQuestion={currentQuestion} />
+                        <Text fontSize="xl" mb="2">Questions:</Text>
+                        <QuestionCrumbs questionLabels={questionLabels} />
                     </Box>
                     <Box mb={4}>
-                        <Text size="xl">What is the question?</Text>
+                        <Text fontSize="xl">What is the question?</Text>
                         <Input value={questionText} onChange={handleQuestionTextChange} placeholder="Think bite sized. Keep it under 500 characters" />
                     </Box>
                     <Box mb={4}>
                         {answers.map((val, i) => <AnswerInput value={val} index={i} onChange={handleAnswersUpdate} />)}
                     </Box>
                     <Box mb={4}>
-                        <Text size="xl">What is the answer?</Text>
+                        <Text fontSize="xl">What is the answer?</Text>
                         <RadioGroup onChange={setAnswer} value={answer}>
                             <Stack direction="row">
                                 <Radio value="A">A</Radio>
@@ -132,8 +160,20 @@ const CreateQuiz: NextPage = () => {
                         </RadioGroup>
                     </Box>
                     <Box mb={4}>
-                        <Button mr={4} onClick={handleNext}>Next</Button>
-                        <Button onClick={() => setCurrentQuestion(currentQuestion - 1)}>Back</Button>
+                        <Button
+                            mr={4}
+                            onClick={handleNext}
+                            backgroundColor={MAIN_COLOR_1} 
+                            _hover={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                            _active={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                        >
+                                Next
+                        </Button>
+                        <Button onClick={() => setCurrentStage(currentStage - 1)}>Back</Button>
                     </Box>
                 </Box>
             )
@@ -142,12 +182,25 @@ const CreateQuiz: NextPage = () => {
             return (
                 <Box mb={4}>
                     <Box mb={4}>
-                        <Text size="xl">Please Review Again Before Submitting!</Text>
+                        <Text fontSize="xl">Please Review Again Before Submitting!</Text>
                         Quiz content here!!!!
-                        <QuizReader questions={questions} />
+                        <QuizReader answer={answer} desc={desc} questions={questions} />
                     </Box>
                     <Box mb={4}>
-                        <Button onClick={() => console.log('submitted')}>Submit</Button>
+                        <Button
+                            mr={4}
+                            onClick={handleSubmit}
+                            backgroundColor={MAIN_COLOR_1} 
+                            _hover={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                            _active={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                        >
+                            Submit
+                        </Button>
+                        <Button onClick={() => setCurrentStage(0)}>Edit</Button>
                     </Box>
                 </Box>
             )
@@ -157,8 +210,8 @@ const CreateQuiz: NextPage = () => {
     <Container>
         <Box mb={4} mt={2}>
             <VStack>
-            <Text fontSize="3xl">Create a Quiz</Text>
-            <Text fontSize="xl">Only authorized addresses</Text>
+                <Text fontSize="3xl">Create a Quiz</Text>
+                <Text fontSize="sm">Please note only authorized addresses are allowed to create a quiz</Text>
             </VStack>
         </Box>
         {renderBody()}

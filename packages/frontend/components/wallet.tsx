@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Button, Box, Flex, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { injected, formatAddress } from '../utils/web3'
 import { UserRejectedRequestError } from '@web3-react/injected-connector'
-import { DEFAULT_COLOR_SCHEME } from '../utils/constants'
+import { MAIN_COLOR_1, MAIN_COLOR_HOVER_1 } from '../utils/constants'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 
 const Wallet = () => {
@@ -25,7 +25,17 @@ const Wallet = () => {
         <>
             {!web3Connect.active && 
                 <Menu>
-                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme={DEFAULT_COLOR_SCHEME}>
+                    <MenuButton
+                    as={Button}
+                    rightIcon={<ChevronDownIcon/>}
+                    backgroundColor={MAIN_COLOR_1} 
+                    _hover={{
+                        background: MAIN_COLOR_HOVER_1,
+                      }}
+                    _active={{
+                        background: MAIN_COLOR_HOVER_1,
+                    }}
+                    >
                         Connect Wallet
                     </MenuButton>
                     <MenuList>
@@ -36,7 +46,16 @@ const Wallet = () => {
             {web3Connect.active && typeof web3Connect.account === 'string' && typeof web3Connect.chainId === 'number' && 
             <>
                 <Menu>
-                    <MenuButton as={Button}>
+                    <MenuButton
+                        as={Button}
+                        backgroundColor={MAIN_COLOR_1} 
+                        _hover={{
+                            background: MAIN_COLOR_HOVER_1,
+                          }}
+                        _active={{
+                            background: MAIN_COLOR_HOVER_1,
+                        }}
+                    >
                         <Flex alignItems='center'>
                             <Box>{formatAddress(web3Connect.account)}</Box>
                         </Flex>
