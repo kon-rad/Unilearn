@@ -27,12 +27,12 @@ const QuizContent = (props: Props) => {
                 <Text fontSize="xl">{desc}</Text>
             </Box>
             {questions.map((question, questionIndex) => (
-                <Box mb={4}>
+                <Box mb={4} key={`question_${questionIndex}`}>
                     <Box mb={2}>
                         <Text fontSize="xl">Question: {question.question}</Text>
                     </Box>
                     {question.answers.map((ans, i) => (
-                        <Box mb={2}>
+                        <Box mb={2} key={`ans_${i}`}>
                             {ANSWER_LABELS[i]}: {ans}
                         </Box>
                     ))}

@@ -18,13 +18,13 @@ const QuizReader = (props: Props) => {
                 <Text fontSize="3xl" mb={1}>Quiz Content:</Text>
                 <Text fontSize="xl">{desc}</Text>
             </Box>
-            {questions.map(question => (
-                <Box mb={4}>
+            {questions.map((question, i) => (
+                <Box mb={4} key={`question_${i}`}>
                     <Box mb={2}>
                         <Text fontSize="xl">Question: {question.question}</Text>
                     </Box>
                     {question.answers.map((ans, i) => (
-                        <Box mb={2}>
+                        <Box mb={2} key={`answer_${i}`}>
                             {ANSWER_LABELS[i]}: {ans}
                         </Box>
                     ))}

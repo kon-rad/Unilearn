@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { GetStaticProps, GetStaticPaths } from 'next'
 import { Box, Text, Container } from '@chakra-ui/react';
 
-type Props = {
+type Props = {}
 
-}
-
-// export default function Quiz(props: Props) {
 const Quiz = (props: Props) => {
     return (
         <Container>

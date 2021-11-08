@@ -1,0 +1,25 @@
+{
+    "background_color": "#fff",
+    "display": "standalone",
+    "homepage_url": "https://uniswap.university",
+    "providedBy": {
+        "name": "Unilearn",
+        "url": "https://uniswap.university"
+    },
+    "icons": [
+        {
+            "src": "./resources/images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "orientation": "portrait",
+    "name": "Unilearn",
+    "description": "A decentralized learning platform for Uniswap and Defi",
+    "iconPath": "./resources/images/logo.png",
+    "short_name": "Unilearn",
+    "start_url": ".",
+    "theme_color": "#ED64A6",
+    "skylink": "vg1clpruc38mu8d8419odrilbk8q07pjbkg8id8nrbmol43il0gid7g"
+}

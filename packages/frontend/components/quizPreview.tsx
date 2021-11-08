@@ -13,7 +13,6 @@ type Props = {
 const QuizPreview = (props: Props) => {
     const { title, description } = props.quiz;
 
-
     return (
         <Box mb={4} border="1px" borderColor="gray" borderRadius="6" p={5}>
             <Text fontSize="2xl">{title}</Text>

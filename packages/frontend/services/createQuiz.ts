@@ -6,6 +6,7 @@ import { unilearnNFTAddress, unilearnAddress } from '../config';
 import NFT from '../artifacts/contracts/UnilearnNFT.sol/UnilearnNFT.json';
 import Unilearn from '../artifacts/contracts/Unilearn.sol/Unilearn.json';
 
+// @ts-ignore
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 export async function uploadQuizToIPFS(quiz: string): Promise<string> {
@@ -17,14 +18,13 @@ export async function uploadQuizToIPFS(quiz: string): Promise<string> {
 }
 
 export async function createQuiz(address: string, provider: Web3Provider, nftUrl: string, answers: string): Promise<string| undefined>  {
-    console.log('creating Quiz', address, provider, nftUrl)
     if (!nftUrl) {
         console.error('Error: missing data: ', nftUrl);
         return;
     }
 
     const signer = provider.getSigner()
-    /* next, create the item */
+    /* next, create the NFT of the quiz */
     let contract = new ethers.Contract(unilearnNFTAddress, NFT.abi, signer);
     let transaction = await contract.createToken(nftUrl);
     const tx = await transaction.wait();

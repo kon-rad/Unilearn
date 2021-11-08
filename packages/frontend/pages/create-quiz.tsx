@@ -9,13 +9,7 @@ import { MAIN_COLOR_1, MAIN_COLOR_HOVER_1 } from '../utils/constants';
 import { createQuiz, uploadQuizToIPFS } from '../services/createQuiz';
 import { useWeb3React } from "@web3-react/core"
 
-// import { nftAddress, dlMarketAddress } from '../config';
-
-// import NFT from '../artifacts/contracts/DLNFT.sol/DLNFT.json';
-// import Market from '../artifacts/contracts/DLMarket.sol/DLMarket.json';
-
 const QUESTION_LABELS = [1, 2, 3, 4, 5];
-const QUESTION_LABEL = { label: null, isCompleted: false};
 const DEFAULT_ANSWERS = ["", "", "", ""];
 const QUESTION_TEMPLATE = {
     question: "",
@@ -93,7 +87,6 @@ const CreateQuiz: NextPage = () => {
         setAnswer(questions[currQuestionIndex].answer);
     }
     const handleSubmit = async () => {
-        // () => console.log('submitted: ', JSON.stringify(questions), quizTitle, desc)
 
         const questionsOnly = questions.map(({ question, answers }) => ({ question, answers }));
         const data: string = JSON.stringify({
@@ -106,9 +99,7 @@ const CreateQuiz: NextPage = () => {
         // for dev mode use hardcoded ipfs url
         // const url = " https://ipfs.infura.io/ipfs/QmcaCKWDrkB1JriLaWZRCXkYReBE5p1CJaA4eTyYwAw93v";
 
-        console.log('ipfs url: ', url, 'data: ', data, answers);
         if (web3.account && web3.library) {
-            console.log('calling create');
             await createQuiz(web3.account, web3.library, url, answers);
         } else {
             console.error("Error: user must have a connected wallet")
@@ -159,7 +150,7 @@ const CreateQuiz: NextPage = () => {
                         <Input value={questionText} onChange={handleQuestionTextChange} placeholder="Think bite sized. Keep it under 500 characters" />
                     </Box>
                     <Box mb={4}>
-                        {answers.map((val, i) => <AnswerInput value={val} index={i} onChange={handleAnswersUpdate} />)}
+                        {answers.map((val, i) => <AnswerInput key={`answer_${i}`} value={val} index={i} onChange={handleAnswersUpdate} />)}
                     </Box>
                     <Box mb={4}>
                         <Text fontSize="xl">What is the answer?</Text>
@@ -191,7 +182,6 @@ const CreateQuiz: NextPage = () => {
                 </Box>
             )
         } else {
-            console.log("questions: ", questions);
             return (
                 <Box mb={4}>
                     <Box mb={4}>
