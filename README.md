@@ -1,4 +1,4 @@
-[![Add to Homescreen](https://img.shields.io/badge/Skynet-Add%20To%20Homescreen-00c65e?logo=skynet&labelColor=0d0d0d)](https://homescreen.hns.siasky.net/#/skylink/vg1clpruc38mu8d8419odrilbk8q07pjbkg8id8nrbmol43il0gid7g)
+[![Add to Homescreen](https://img.shields.io/badge/Skynet-Add%20To%20Homescreen-00c65e?logo=skynet&labelColor=0d0d0d)](https://homescreen.hns.siasky.net/#/skylink/_ALRPX23UhpmjOD_slkEinJpUjJguPA8V_yx-S3W6aYM1g)
 
 # Unilearn
 
