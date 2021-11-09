@@ -13,6 +13,13 @@ This is a DAPP where a user connects their wallet and goes through an interactiv
 
 They are also asked to complete challenges that are then verified on chain. 
 
+## Deployed to Optimistic Kovan
+Main quiz contract:
+https://kovan-optimistic.etherscan.io/address/0x6C13bC64ACe1C0033f60b7fb6Ba3B62Ae92B0A9D
+Quiz NFT congract:
+https://kovan-optimistic.etherscan.io/address/0x92EfE2B049D04236D05f5195AF25deAd3b3cBDC4
+
+
 Sample Quiz:
 
 title:
