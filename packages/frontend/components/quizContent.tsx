@@ -21,11 +21,7 @@ const QuizContent = (props: Props) => {
         setForm(currForm);
     }
     return (
-        <Box>
-            <Box mb={4}>
-                <Text fontSize="3xl" mb={1}>Quiz Content:</Text>
-                <Text fontSize="xl">{desc}</Text>
-            </Box>
+        <Box mb={4}>
             {questions.map((question, questionIndex) => (
                 <Box mb={4} key={`question_${questionIndex}`}>
                     <Box mb={2}>

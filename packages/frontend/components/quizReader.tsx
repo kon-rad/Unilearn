@@ -10,7 +10,7 @@ type Props = {
 }
 
 const QuizReader = (props: Props) => {
-    const { questions, desc, answer } = props;
+    const { questions, desc } = props;
 
     return (
         <Box>

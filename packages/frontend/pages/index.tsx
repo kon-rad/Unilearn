@@ -58,7 +58,7 @@ const Home: NextPage = () => {
     const metaData = quizMetaData[currentQuiz];
     return (
       <Box mt={4}>
-        <Text fontSize="3xl" mb="2">{quiz.title}</Text>
+        <Text textAlign="center" fontSize="3xl" mb="2">{quiz.title}</Text>
         <Text fontSize="xl" mb="2">{quiz.description}</Text>
         <QuizContent handleQuizSubmit={handleQuizSubmit} questions={quiz.questions} desc={quiz.description} answer={""} />
       </Box>
