@@ -92,6 +92,7 @@ const CreateQuiz: NextPage = () => {
         const answers: string = questions.reduce((acc: string, curr: Question) => acc + curr.answer, '');
         if (answers.length !== 5) {
             alert("Error: a quiz must have five questions and answers");
+            throw "Error: a quiz must have five questions and answers";
         }
         const url = await uploadQuizToIPFS(data);
         // for dev mode use hardcoded ipfs url

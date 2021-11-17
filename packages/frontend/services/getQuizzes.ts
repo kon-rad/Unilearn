@@ -17,7 +17,7 @@ export const getQuizzes = async (): Promise<any| undefined> => {
 
     const quizzes = await unilearnContract.getAllQuizzes();
     
-    // filter out any tokens with no ID
+    // filter out any tokens with no ID - dev env issue only
     const filteredQuizzes = quizzes.filter((q: any) => Boolean(q[0]))
     const quizzesContent = await Promise.all(
         filteredQuizzes

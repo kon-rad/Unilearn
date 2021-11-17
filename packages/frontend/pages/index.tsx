@@ -11,6 +11,7 @@ import { getQuizzes, submitQuiz } from '../services/getQuizzes';
 import { useWeb3React } from "@web3-react/core"
 import QuizContent from '../components/quizContent';
 
+// dev env only 
 const mockQuiz = {
   title: "mock quiz",
   desc: "mock desc", 
@@ -19,9 +20,9 @@ const mockQuiz = {
 
 const Home: NextPage = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [quizMetaData, setQuizMetaData] = useState<any>([]);
+  const [quizTokenId, setquizTokenId] = useState<string[]>([]);
   const [showList, setShowList] = useState<boolean>(true);
-  const [currentQuiz, setCurrentQuiz] = useState<any>();
+  const [currentQuizIndex, setCurrentQuizIndex] = useState<number | null>(null);
   const [result, setResult] = useState<string>("");
 
   const web3 = useWeb3React()
@@ -34,16 +35,23 @@ const Home: NextPage = () => {
     const quizzesData = await getQuizzes();
     if (quizzesData && quizzesData.length === 2) {
       setQuizzes([...quizzesData[1]]);
-      setQuizMetaData(quizzesData[0])
+      setquizTokenId(quizzesData[0].map((metaData: any) => metaData[0]));
+      console.log('setquizTokenId', quizzesData[0]);
+      console.log('setQuizzes', quizzesData[1]);
     }
   }
 
-  const handleGoToQuiz = (tokenId: string) => {
+  const handleGoToQuiz = (quizIndex: number) => {
     setShowList(false);
-    setCurrentQuiz(tokenId);
+    console.log('quizIndex', quizIndex);
+    setCurrentQuizIndex(quizIndex);
   }
+
   const handleQuizSubmit = async (ans: string) => {
-    const nftId = quizMetaData[currentQuiz][0];
+    if (currentQuizIndex === null) {
+      throw "Error: quiz not found";
+    }
+    const nftId = quizTokenId[currentQuizIndex];
     if (web3.library) {
       const res = await submitQuiz(nftId, ans, web3.library);
       setResult(res);
@@ -51,8 +59,12 @@ const Home: NextPage = () => {
       console.error("user must log in via metamask");
     }
   }
+
   const renderQuiz = () => {
-    const quiz = quizzes[currentQuiz];
+    if (currentQuizIndex === null) {
+      throw "Error: quiz not found";
+    }
+    const quiz = quizzes[currentQuizIndex];
     return (
       <Box mt={4}>
         <Text textAlign="center" fontSize="3xl" mb="2">{quiz.title}</Text>
@@ -72,7 +84,7 @@ const Home: NextPage = () => {
         <Box>
             {showList ? quizzes.map(
               (quiz: any, i: number) =>
-                <QuizPreview handleGoToQuiz={handleGoToQuiz} tokenId={quizMetaData[i] && quizMetaData[i][0]} quiz={quiz} key={i} quizIndex={i} />
+                <QuizPreview handleGoToQuiz={handleGoToQuiz} tokenId={quizTokenId[i]} quiz={quiz} key={i} quizIndex={i} />
             ) : renderQuiz()}
         </Box>
       </>

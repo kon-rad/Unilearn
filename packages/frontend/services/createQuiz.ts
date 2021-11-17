@@ -28,10 +28,13 @@ export async function createQuiz(address: string, provider: Web3Provider, nftUrl
     let contract = new ethers.Contract(unilearnNFTAddress, NFT.abi, signer);
     let transaction = await contract.createToken(nftUrl);
     const tx = await transaction.wait();
+
     if (tx.events.length < 1) {
-      console.error('tx has no events. tx: ', tx);
-      return;
+        // was not able to get the NFT token Id
+        console.error('tx has no events. tx: ', tx);
+        return;
     }
+
     const event = tx.events[0];
     const value = event.args[2];
     const tokenId = value.toNumber();
