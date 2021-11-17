@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Input, Flex, Text, Textarea, Center, Box, Button } from '@chakra-ui/react'
+import { Text, Box } from '@chakra-ui/react'
 import { Question } from '../types';
 import { ANSWER_LABELS } from '../utils/constants';
 

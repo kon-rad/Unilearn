@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Input, Flex, Text, Textarea, Center, Box, Button, RadioGroup, Radio, Stack } from '@chakra-ui/react'
+import { Text, Box, Button, RadioGroup, Radio, Stack } from '@chakra-ui/react'
 import { Question } from '../types';
 import { ANSWER_LABELS, MAIN_COLOR_1, MAIN_COLOR_HOVER_1 } from '../utils/constants';
 
@@ -9,10 +9,11 @@ type Props = {
     desc: string,
     handleQuizSubmit: any,
 }
+
 const DEFAULT_FORM = ["", "", "", "", ""];
 
 const QuizContent = (props: Props) => {
-    const { questions, desc, handleQuizSubmit } = props;
+    const { questions, handleQuizSubmit } = props;
     const [form, setForm] = useState<any>([...DEFAULT_FORM]);
 
     const setAnswer = (val: string, index: number) => {

@@ -1,11 +1,11 @@
-import { Input, Flex, Text, Textarea, Center, Box, Button } from '@chakra-ui/react'
+import { Flex, Box } from '@chakra-ui/react'
 import { QuestionLabel } from '../types';
 
 type Props = {
     questionLabels: QuestionLabel[],
 }
 
-const QuestionForm = (props: Props) => {
+const QuestionCrumbs = (props: Props) => {
     const { questionLabels } = props;
 
     return (
@@ -27,4 +27,4 @@ const QuestionForm = (props: Props) => {
     )
 }
 
-export default QuestionForm;
+export default QuestionCrumbs;

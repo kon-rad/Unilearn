@@ -13,6 +13,7 @@ const Wallet = () => {
         web3Connect.activate(injected, (error) => {
             // todo: present toast notifications
             console.error('connection error: ', error);
+            alert(`Error: unable to connect. ${error}`)
             if (error instanceof UserRejectedRequestError) {
                 // ignore user rejected error
             } else {
@@ -44,24 +45,24 @@ const Wallet = () => {
                 </Menu>
             }
             {web3Connect.active && typeof web3Connect.account === 'string' && typeof web3Connect.chainId === 'number' && 
-            <>
-                <Menu>
-                    <MenuButton
-                        as={Button}
-                        backgroundColor={MAIN_COLOR_1} 
-                        _hover={{
-                            background: MAIN_COLOR_HOVER_1,
-                          }}
-                        _active={{
-                            background: MAIN_COLOR_HOVER_1,
-                        }}
-                    >
-                        <Flex alignItems='center'>
-                            <Box>{formatAddress(web3Connect.account)}</Box>
-                        </Flex>
-                    </MenuButton>
-                </Menu>
-            </>
+                <>
+                    <Menu>
+                        <MenuButton
+                            as={Button}
+                            backgroundColor={MAIN_COLOR_1} 
+                            _hover={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                            _active={{
+                                background: MAIN_COLOR_HOVER_1,
+                            }}
+                        >
+                            <Flex alignItems='center'>
+                                <Box>{formatAddress(web3Connect.account)}</Box>
+                            </Flex>
+                        </MenuButton>
+                    </Menu>
+                </>
             }
         </>
     )

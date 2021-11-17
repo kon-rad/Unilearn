@@ -43,7 +43,6 @@ const Home: NextPage = () => {
     setCurrentQuiz(tokenId);
   }
   const handleQuizSubmit = async (ans: string) => {
-    console.log('submit', ans);
     const nftId = quizMetaData[currentQuiz][0];
     if (web3.library) {
       const res = await submitQuiz(nftId, ans, web3.library);
@@ -53,9 +52,7 @@ const Home: NextPage = () => {
     }
   }
   const renderQuiz = () => {
-    let quizIndex = 0;
     const quiz = quizzes[currentQuiz];
-    const metaData = quizMetaData[currentQuiz];
     return (
       <Box mt={4}>
         <Text textAlign="center" fontSize="3xl" mb="2">{quiz.title}</Text>
