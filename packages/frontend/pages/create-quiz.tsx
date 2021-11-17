@@ -16,6 +16,7 @@ const QUESTION_TEMPLATE = {
     answers: [...DEFAULT_ANSWERS],
     answer: "",
 }
+const LAST_STAGE = 6;
 
 const CreateQuiz: NextPage = () => {
     const [desc, setDesc] = useState<string>("");
@@ -62,14 +63,16 @@ const CreateQuiz: NextPage = () => {
         const currQuestionLabels = [...questionLabels];
         currQuestionLabels[currQuestionIndex].isCompleted = true;
         currQuestionLabels[currQuestionIndex].isActive = false;
-        if (currentStage !== 5) {
+        // LAST_STAGE - 1 because currentStage is only updated at the bottom of this function
+        if (currentStage < LAST_STAGE - 1) {
             currQuestionLabels[currentStage].isActive = true;
+            // only load question form if on stage 1-5 (you're filling in questions 1-5)
+            loadQuestionForm();
         } else {
             currQuestionLabels[currQuestionIndex].isCompleted = true;
         }
         setQuestionLabels(currQuestionLabels)
-        setCurrentStage(currentStage === 5 ? currentStage : currentStage + 1)
-        loadQuestionForm();
+        setCurrentStage(currentStage === LAST_STAGE ? currentStage : currentStage + 1)
     }
     const loadQuestionForm = () => {
         const currQuestionIndex = currentStage - 1;
@@ -211,7 +214,7 @@ const CreateQuiz: NextPage = () => {
     const renderBody = () => {
         if (currentStage === 0) {
             return renderFirstStage();
-        } else if (currentStage < 5) {
+        } else if (currentStage < LAST_STAGE) {
             return renderQuestionInputs();
         } else {
             return renderReviewSection();
