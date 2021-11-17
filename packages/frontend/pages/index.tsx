@@ -1,7 +1,5 @@
 import type { NextPage } from 'next'
 import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import axios from 'axios';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { Container, Box, VStack, Text } from '@chakra-ui/react';
@@ -36,14 +34,11 @@ const Home: NextPage = () => {
     if (quizzesData && quizzesData.length === 2) {
       setQuizzes([...quizzesData[1]]);
       setquizTokenId(quizzesData[0].map((metaData: any) => metaData[0]));
-      console.log('setquizTokenId', quizzesData[0]);
-      console.log('setQuizzes', quizzesData[1]);
     }
   }
 
   const handleGoToQuiz = (quizIndex: number) => {
     setShowList(false);
-    console.log('quizIndex', quizIndex);
     setCurrentQuizIndex(quizIndex);
   }
 
@@ -56,7 +51,7 @@ const Home: NextPage = () => {
       const res = await submitQuiz(nftId, ans, web3.library);
       setResult(res);
     } else {
-      console.error("user must log in via metamask");
+      alert("User must log in with their metamask wallet");
     }
   }
 
