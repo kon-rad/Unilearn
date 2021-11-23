@@ -8,6 +8,7 @@ import { Quiz } from '../types';
 import { getQuizzes, submitQuiz } from '../services/getQuizzes';
 import { useWeb3React } from "@web3-react/core"
 import QuizContent from '../components/quizContent';
+import { ethers } from 'ethers';
 
 // dev env only 
 const mockQuiz = {
@@ -24,13 +25,13 @@ const Home: NextPage = () => {
   const [result, setResult] = useState<string>("");
 
   const web3 = useWeb3React()
-
+  const provider = new ethers.providers.JsonRpcProvider();
   useEffect(() => {
     requestQuizzes();
   }, [])
 
   const requestQuizzes = async () => {
-    const quizzesData = await getQuizzes();
+    const quizzesData = await getQuizzes(provider);
     if (quizzesData && quizzesData.length === 2) {
       setQuizzes([...quizzesData[1]]);
       setquizTokenId(quizzesData[0].map((metaData: any) => metaData[0]));

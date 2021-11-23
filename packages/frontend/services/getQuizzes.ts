@@ -6,8 +6,7 @@ import NFT from '../artifacts/contracts/UnilearnNFT.sol/UnilearnNFT.json';
 import Unilearn from '../artifacts/contracts/Unilearn.sol/Unilearn.json';
 
 // todo: set quiz type
-export const getQuizzes = async (): Promise<any| undefined> => {
-    const provider = new ethers.providers.JsonRpcProvider();
+export const getQuizzes = async (provider: ethers.providers.JsonRpcProvider): Promise<any| undefined> => {
 
     const unilearnContract = new ethers.Contract(
         unilearnAddress,
@@ -21,14 +20,13 @@ export const getQuizzes = async (): Promise<any| undefined> => {
     const filteredQuizzes = quizzes.filter((q: any) => Boolean(q[0]))
     const quizzesContent = await Promise.all(
         filteredQuizzes
-            .map((elem: any) => getQuizContent(elem, unilearnContract))
+            .map((elem: any) => getQuizContent(elem, provider))
     );
   
     return [filteredQuizzes, quizzesContent];
 }
 
-const getQuizContent = async (quiz: any, contract: ethers.Contract) => {
-    const provider = new ethers.providers.JsonRpcProvider();
+const getQuizContent = async (quiz: any, provider: ethers.providers.JsonRpcProvider) => {
 
     const nftContract = new ethers.Contract(
         unilearnNFTAddress,
