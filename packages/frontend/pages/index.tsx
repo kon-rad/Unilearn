@@ -25,7 +25,8 @@ const Home: NextPage = () => {
   const [result, setResult] = useState<string>("");
 
   const web3 = useWeb3React()
-  const provider = new ethers.providers.JsonRpcProvider();
+  const provider = ethers.getDefaultProvider('ropsten');
+  // const provider = new ethers.providers.JsonRpcProvider();
   useEffect(() => {
     requestQuizzes();
   }, [])
