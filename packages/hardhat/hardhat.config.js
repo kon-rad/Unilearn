@@ -5,7 +5,6 @@ require("@nomiclabs/hardhat-waffle");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 
-
 const secret =
   fs.readFileSync('.secret').toString().trim() || '01234567890123456789';
 
@@ -48,26 +47,31 @@ module.exports = {
   solidity: "0.8.4",
   defaultNetwork,
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+    rinkeby: {
+      url: process.env.RINKEBY_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    kovan: {
-      url: `https://kovan.infura.io/v3/${secret}`, // <---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-    },
-    kovanOptimism: {
-      url: "https://kovan.optimism.io",
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-      companionNetworks: {
-        l1: "kovan",
-      },
-    },
+     },
+     ropsten: {
+       url: process.env.ROPSTEN_URL || "",
+       accounts:
+         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+     },
+     kovan: {
+       url: `https://kovan.infura.io/v3/${secret}`, // <---- YOUR INFURA ID! (or it won't work)
+       accounts: {
+         mnemonic: mnemonic(),
+       },
+     },
+     kovanOptimism: {
+       url: "https://kovan.optimism.io",
+       accounts: {
+         mnemonic: mnemonic(),
+       },
+       companionNetworks: {
+         l1: "kovan",
+       },
+     },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,

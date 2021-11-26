@@ -45,7 +45,7 @@ const Home: NextPage = () => {
 
   const handleQuizSubmit = async (ans: string) => {
     if (currentQuizIndex === null) {
-      throw "Error: quiz not found";
+      throw new Error("Error: quiz not found");
     }
     const nftId = quizTokenId[currentQuizIndex];
     if (web3.library) {
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
 
   const renderQuiz = () => {
     if (currentQuizIndex === null) {
-      throw "Error: quiz not found";
+      throw new Error("Error: quiz not found");
     }
     const quiz = quizzes[currentQuizIndex];
     return (
